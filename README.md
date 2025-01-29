@@ -23,6 +23,7 @@ The agent is a n8n agent - based on Claude Haiku - but you can probably just swa
 - Credentials for Agent0
 - Credentials for helper api endpoint
 - URL for helper API endpoint
+- create the 'videos' table in Supabase via `supabase.table.sql`
 
 
 ## Helper API edpoint
