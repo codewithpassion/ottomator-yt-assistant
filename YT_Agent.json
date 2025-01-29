@@ -1,0 +1,1733 @@
+{
+  "name": "YT-Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "tableId": "messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $json.session_id }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ {\n\"type\": \"human\",\n\"content\": $json.query,\n\"additional_kwargs\": {},\n\"response_metadata\": {}\n} }}"
+            }
+          ]
+        }
+      },
+      "id": "2b95d58e-b917-4d50-bfe5-1bfc6584a040",
+      "name": "Add User Message to DB",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        120
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('Add User Message to DB').isExecuted && $('Add User Message to DB').last().json.session_id }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ {\n\"type\": \"ai\",\n\"content\": $json.data,\n\"data\": $json.data,\n\"additional_kwargs\": {},\n\"response_metadata\": {}\n} }}"
+            }
+          ]
+        }
+      },
+      "id": "e2e1964f-1359-4301-aad4-85218efcab64",
+      "name": "Add AI Message to DB",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        5040,
+        660
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ee2bcd57-3b4c-43f9-b4b7-3a25687b9a68",
+              "name": "query",
+              "value": "={{ $json.body.query }}",
+              "type": "string"
+            },
+            {
+              "id": "63f23e51-af2b-47c4-a288-5abaf9b6c357",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b97a3670-8a87-481b-8695-db44624be7d8",
+              "name": "request_id",
+              "value": "={{ $json.body.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7d3fa06d-08f7-4517-b9c5-3c46ff476f55",
+              "name": "session_id",
+              "value": "={{ $json.body.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fdc833f7-e241-4de6-928d-2de4729b8d86",
+      "name": "Prep Input Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5eaa2a2-a6bc-40ab-af5e-baa8a5dda1a7",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            },
+            {
+              "id": "17e06634-66c7-41d2-8324-2d2c72da762b",
+              "name": "message.content",
+              "value": "={{ $json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f31710a6-4d4f-462a-bda7-1b3f1d2cd7e0",
+      "name": "Prep Output Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5340,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9a6c4630-b422-4d42-b894-81ecfe881ffe",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "cf3ccea6-f390-48dd-9f2e-052015369212",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        680,
+        320
+      ],
+      "webhookId": "9a6c4630-b422-4d42-b894-81ecfe881ffe",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "KZZhiJiNWLcgxGNa",
+          "name": "Webhook Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a classifier for a YouTube video interaction system. Your role is to analyze user input and classify it into structured actions related to YouTube videos. You must respond ONLY with a JSON object representing the classified action.\n\nOutput Format:\n{\n    \"action_type\": \"add|summarize|search|respond\",\n    \"video_url\": \"<url or null>\",\n    \"video_title\": \"<title or null>\",\n    \"search_query\": \"<search terms or null>\",\n    \"confidence\": <0.0-1.0>,\n    \"response\": \"response\"\n}\n\nRules:\n- If a user provides a YouTube URL alone, classify it as an \"add\" action\n- If a user asks about video content with a URL or title, classify it as a \"summarize\" action\n- If a user asks to find specific information from past videos, classify it as a \"search\" action\n- Include the confidence score based on how clearly the user's intent matches the classification\n- Only include non-null values for relevant fields\n- If you can respond directly, answer with a action_type of 'respond' and set the \"response\" property. IT IS IMPORTANT THAT YOU RETURN A RESPONSE FOR THE USER IN THIS CASE!\n\nExamples:\n\n1. User Input: \"https://youtube.com/watch?v=12345\"\nOutput:\n{\n    \"action_type\": \"add\",\n    \"video_url\": \"https://youtube.com/watch?v=12345\",\n    \"confidence\": 1.0\n}\n\n2. User Input: \"Can you please add this video https://youtube.com/watch?v=67890\"\nOutput:\n{\n    \"action_type\": \"add\",\n    \"video_url\": \"https://youtube.com/watch?v=67890\",\n    \"confidence\": 1.0\n}\n\n3. User Input: \"Can you summarize this video for me: https://youtube.com/watch?v=24680\"\nOutput:\n{\n    \"action_type\": \"summarize\",\n    \"video_url\": \"https://youtube.com/watch?v=24680\",\n    \"confidence\": 1.0\n}\n\n4. User Input: \"What was that video about neural networks that I watched last week?\"\nOutput:\n{\n    \"action_type\": \"search\",\n    \"search_query\": \"neural networks\",\n    \"confidence\": 0.8\n}\n\n5. User Input: \"Please summarize the video 'Getting Started with Python'\"\nOutput:\n{\n    \"action_type\": \"summarize\",\n    \"video_title\": \"Getting Started with Python\",\n    \"confidence\": 0.9\n}\n\n6. User Input: \"I remember watching a video about startup ideas, can you find it?\"\nOutput:\n{\n    \"action_type\": \"search\",\n    \"search_query\": \"startup ideas\",\n    \"confidence\": 0.7\n}\n\n7. User Input: \"What do you think about this video https://youtube.com/watch?v=13579 and can you add it?\"\nOutput:\n{\n    \"action_type\": \"add\",\n    \"video_url\": \"https://youtube.com/watch?v=13579\",\n    \"confidence\": 0.8\n}\n\n8. User Input: \"What can you you?\"\nOutput:\nOutput:\n{\n    \"action_type\": \"respond\",\n    \"response\": \"I'm a youtube assitant and I can add youtube video to my database, answer questions about a specific videos, or can search by tags, titles, or topics that were discussed in videos. \n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1360,
+        -80
+      ],
+      "id": "2ee54c88-6fc7-449d-9bfa-4c0a105b44df",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-haiku-20241022",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.2,
+      "position": [
+        1340,
+        -700
+      ],
+      "id": "1f7d580e-3ce1-4b7b-9806-d94c60d2325c",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "awt22UtMqvHYjwbw",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.action_type }}",
+                    "rightValue": "add",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "275e8dea-2a5d-4153-a58e-21f7ce644c4d",
+                    "leftValue": "={{ $json.output.action_type }}",
+                    "rightValue": "respond",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "75fb8c9b-bc0a-4f07-b6fa-2064cfb89941",
+                    "leftValue": "={{ $json.output.action_type }}",
+                    "rightValue": "summarize",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0a88cea3-d70d-4799-aa6d-1499d0d11c88",
+                    "leftValue": "={{ $json.output.action_type }}",
+                    "rightValue": "search",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1740,
+        -80
+      ],
+      "id": "29664304-b018-471a-b389-98c479973a58",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"action_type\": \"add|summarize|search\",\n    \"video_url\": \"url or null\",\n    \"video_title\": \"title or null\",\n    \"search_query\": \"search terms or null\",\n    \"confidence\": 0.0,\n  \"response\": \"Test\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1540,
+        140
+      ],
+      "id": "fed36d30-26a4-4c77-b719-96f9f2228397",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "function getYouTubeVideoId(url) {\n  // Handle different URL patterns\n  const patterns = [\n    /(?:youtube\\.com\\/watch\\?v=|youtu\\.be\\/|youtube\\.com\\/embed\\/)([^&?/]+)/,\n    /youtube\\.com\\/v\\/([^&?/]+)/,\n    /youtube\\.com\\/shorts\\/([^&?/]+)/\n  ];\n\n  for (const pattern of patterns) {\n    const match = url.match(pattern);\n    if (match) {\n      return match[1];\n    }\n  }\n\n  return null;\n}\nreturn { json: { videoId: getYouTubeVideoId($input.first().json.output.video_url) } }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        -320
+      ],
+      "id": "f1170825-6bcd-425f-aead-cf57a42cf1b6",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn {transcript: $input.first().json.data.transcript.map(item => item.text).join(\" \") }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        -460
+      ],
+      "id": "8b0dca56-8eab-42cf-9bd2-b4d157127f78",
+      "name": "Combine transcript"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.transcript }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert summerizer for youtube video transcripts. \n\nPlease generate:\n- Summary\n- Key Points\n- Actionable tasks\n- Exacted quotes\n\nAlways only return the value as a json object:\n\nEXAMPLE:\n{\n  \"summary\": \"this is the summary\",\n  \"keypoints\": [\"point1\", \"point2\"],\n  \"actionable-tasks\": [\"task1\", \"task2\"],\n  \"extracted-quotes\": [\"quote 1, quote 2\"]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3060,
+        -520
+      ],
+      "id": "025c2695-0fee-4071-bfa0-81a515255b8e",
+      "name": "Summarize agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.transcript }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert in generating tags for youtube videos to classify them, and allow users to search for them later\n\nPlease generate at least 10 tags but as many as you feel required.\n\nExample output:\n{ \"tags\": [ \"tag1\", \"tag2\" ] }\n\nIMPORTANT:\nOnly return the json result, nothing else!"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2980,
+        -200
+      ],
+      "id": "66f9b7c3-90c4-4ea3-8e62-8bdbfc164df4",
+      "name": "Tag generator agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{ \"tags\": [ \"tag\"] }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3160,
+        60
+      ],
+      "id": "089cf001-66c3-453a-81a9-74822e0d5b6f",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"summary\": \"this is the summary\",\n  \"keypoints\": [\"point1\", \"point2\"],\n  \"actionable-tasks\": [\"task1\", \"task2\"],\n  \"extracted-quotes\": [\"quote 1, quote 2\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3220,
+        -700
+      ],
+      "id": "00ffc35d-818b-49be-aa99-06f2d1cc83c9",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        3340,
+        -220
+      ],
+      "id": "2b0f7c1b-7741-4148-ab93-e91dd8e31d59",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "X-n8n-Signature",
+                "value": "EvtIS^EBVISeie6svB@6ev"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6e8badc5-93d0-418b-9d3b-4b11fa2055d5",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        5600,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "videos",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "video_id",
+              "fieldValue": "={{ $('Code').item.json.videoId }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.title }}"
+            },
+            {
+              "fieldId": "channel",
+              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.channelName }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.description }}"
+            },
+            {
+              "fieldId": "summary",
+              "fieldValue": "={{ $('Merge').first().json.output.summary }}"
+            },
+            {
+              "fieldId": "keypoints",
+              "fieldValue": "={{ $('Merge').first().json.output.keypoints }}"
+            },
+            {
+              "fieldId": "actionable-tasks",
+              "fieldValue": "={{ $('Merge').first().json.output['actionable-tasks'] }}"
+            },
+            {
+              "fieldId": "quotes",
+              "fieldValue": "={{ $json.output['extracted-quotes'] }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('Combine transcript').item.json.transcript }}"
+            },
+            {
+              "fieldId": "tags",
+              "fieldValue": "={{ $('Merge').last().json.output.tags }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3560,
+        -200
+      ],
+      "id": "cc455cc0-1f1c-4af8-a51a-c44cbadf6b60",
+      "name": "Add video to supabase",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://wttckgbospxslfaryued.supabase.co/rest/v1/videos?video_id=eq.{{ $json.videoId }}&select=id&limit=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2120,
+        -320
+      ],
+      "id": "825c25a6-387c-4e73-8770-f789ba83292c",
+      "name": "Check if video exists",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "69178277-f8ad-4486-b8dc-a768d11403c9",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2300,
+        -420
+      ],
+      "id": "a5113756-a5a7-4f96-b0a4-c21346132e87",
+      "name": "If row exists"
+    },
+    {
+      "parameters": {
+        "jsCode": "const videoId = $('Code').first().json.videoId;\nreturn {data: `The video with the id ${videoId} is already in the database.`}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2460,
+        140
+      ],
+      "id": "a4fe1cb3-76e6-4455-a8d4-8b99bc62963c",
+      "name": "Return text"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        -320
+      ],
+      "id": "1e9d091c-54f2-491b-b6f2-b55036d3b9f1",
+      "name": "Insert documents",
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1360,
+        -940
+      ],
+      "id": "6d98cfed-1148-4f30-9910-e844e7aae64f",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "IYZp7DISCE2Xdos1",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "953af65b-868c-4a76-a440-5102f2eada82",
+              "name": "data",
+              "value": "={{ $json.transcript }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3780,
+        -280
+      ],
+      "id": "5e6ee0b8-140a-4cff-ac8d-6521f61e0406",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "video_id",
+                "value": "={{ $('Code').item.json.videoId }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        -60
+      ],
+      "id": "0e76621b-8c4f-41be-89bc-6fa4083d25ef",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 100,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        4200,
+        160
+      ],
+      "id": "4b3a3eb1-1eb7-45a4-a0b3-8ced8fc45f7b",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst title = $('Get Transcript and video Info').first().json.data.videoInfo.title;\nconst channel = $('Get Transcript and video Info').first().json.data.videoInfo.channelName;\nreturn {data: `The video '${title}' by ${channel} was added successfully!` };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4520,
+        200
+      ],
+      "id": "6fc4b9a0-b1bb-4d39-b3d9-9a8d0e5088e7",
+      "name": "Video added successfully"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json.output.response\nreturn {data: `${response}`}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2480,
+        840
+      ],
+      "id": "6ed0e4d8-79ea-454b-8fc3-711ee1d55f90",
+      "name": "Return text2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        60
+      ],
+      "id": "23c648f7-e9ac-4c32-8111-effb33c95237",
+      "name": "When chat message received",
+      "webhookId": "a023c538-05ea-4324-9c6d-44653d9a44d4",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c3b6c67-035c-4d27-ae67-51a9b68a8609",
+              "name": "session_id",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3838a84f-ec76-4c2f-a29a-5ed2775566d4",
+              "name": "query",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        60
+      ],
+      "id": "51dfdcf2-0e01-439a-a8a2-b1697557116c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "# Summarize \n",
+        "height": 543,
+        "width": 1470,
+        "color": 2
+      },
+      "id": "2179db98-89d1-4e4a-94ff-889ce3d89a7e",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2380,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Add",
+        "height": 1263,
+        "width": 2970,
+        "color": 4
+      },
+      "id": "745c035c-aadd-486e-80c6-5f57ffa3c36a",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        -820
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "videos",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "video_id",
+              "keyValue": "={{ $json.videoId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        1180
+      ],
+      "id": "ce9d33a2-1aa7-4e7b-a09a-4455581a146c",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function getYouTubeVideoId(url) {\n  // Handle different URL patterns\n  const patterns = [\n    /(?:youtube\\.com\\/watch\\?v=|youtu\\.be\\/|youtube\\.com\\/embed\\/)([^&?/]+)/,\n    /youtube\\.com\\/v\\/([^&?/]+)/,\n    /youtube\\.com\\/shorts\\/([^&?/]+)/\n  ];\n\n  for (const pattern of patterns) {\n    const match = url.match(pattern);\n    if (match) {\n      return match[1];\n    }\n  }\n\n  return null;\n}\nreturn { json: { videoId: getYouTubeVideoId($input.first().json.output.video_url) } }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2440,
+        1180
+      ],
+      "id": "1fe22947-7e82-40ed-a730-f4f25bfe9d0d",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b70b8806-7694-4be8-aed3-7d7a1b87d1fb",
+              "name": "description",
+              "value": "={{ $json.description }}",
+              "type": "string"
+            },
+            {
+              "id": "dbb6ae07-9d8d-4327-9763-875d0a3921b1",
+              "name": "summary",
+              "value": "={{ $json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "0face230-596b-4b54-b66a-7bd653f565c3",
+              "name": "keypoints",
+              "value": "={{ $json.keypoints }}",
+              "type": "array"
+            },
+            {
+              "id": "39f5b157-b642-4508-a0c8-dcf1b62484b2",
+              "name": "actionable-tasks",
+              "value": "={{ $json['actionable-tasks'] }}",
+              "type": "array"
+            },
+            {
+              "id": "ca2b44ef-d787-4996-90c8-e82cb677471d",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "f6da635e-747d-4e8b-9856-96a837aa3b9d",
+              "name": "channel",
+              "value": "={{ $json.channel }}",
+              "type": "string"
+            },
+            {
+              "id": "35d0f345-cd4c-4aca-b9d8-b040c839bb74",
+              "name": "query",
+              "value": "={{  $('Edit Fields1').isExecuted ? $('Edit Fields1').item.json.query : $('Prep Input Fields').item.query }}",
+              "type": "string"
+            },
+            {
+              "id": "3c935f21-9401-4162-bf1a-53b4ba4cff51",
+              "name": "videoId",
+              "value": "={{ $json.video_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2940,
+        1180
+      ],
+      "id": "6d44537f-58e7-44d4-93e9-4474f2d3efe5",
+      "name": "Gather fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert in answering a user question to a video summary. \nThe video is already summerized, and you get the following fields:\n\n- Title\n- Description\n- Summary\n- Key points\n- Tasks\n- Quotes\n\n# The video title is:\n<title>{{ $json.title }}</title>\n\n# The video channel is:\n<channel>{{ $json.channel }}</channel>\n\n# The video description is:\n<description>{{ $json.description }}</description>\n\n# The video Summary is:\n<summary>{{ $json.summary }}</summary>\n\n# Key points:\n<key-points>{{ $json.keypoints }}</key-points>\n\n# Tasks: \n<tasks>{{ $json['actionable-tasks'] }}</tasks>\n\n\nPlease answer the human query:\n<human>{{ $json.query }}</human>\n\n# Expected output:\nRespond directly to the output. Do not mention 'Based on the provided summary'.\n\nExample:\nUser: Can you summarize this videl: http://xxx\nAnswer: The video is discussing ...\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3280,
+        1140
+      ],
+      "id": "1f0e8024-91a3-40cb-a0a5-8e23f6cf075d",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87f25074-de10-4584-9ac3-417409298c3e",
+              "name": "data",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3680,
+        1140
+      ],
+      "id": "2b3ba87a-58d7-4bbd-844a-ad1ca4e7779c",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get the transcript of a video by supplying the video_id",
+        "url": "=https://wttckgbospxslfaryued.supabase.co/rest/v1/videos?video_id=eq.{video_id}&select=id&limit=1",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "video_id",
+              "description": "The id of the video",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        3520,
+        1400
+      ],
+      "id": "7fb3c229-ef69-47e1-a50d-e60ac357d703",
+      "name": "Get Video Transcript",
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Output",
+        "height": 383,
+        "width": 1010,
+        "color": 3
+      },
+      "id": "3df10fa4-51a3-4553-bcdf-edf4aee02be3",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4920,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Search\n",
+        "height": 543,
+        "width": 1470,
+        "color": 7
+      },
+      "id": "d0d85d99-2ebc-43b0-b4c4-c75b7abd7b18",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2380,
+        1720
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use your tool to search for relevant videos and respond to the human.a\nThe search query is: {{ $json.output.search_query }} \n\nAfter the reponse, return the 'video_id' properties from the metadata in a list, prefixed by the Youtube URL.\n\n# Example:\n\nUser: What video is talking about deepseek?\nAnswer: \nThe videos mention deepseek and discuss...\n\n<video_ids>\n<video_id>https://www.youtube.com/watch?v=xyz123</video_id>\n<video_id>https://www.youtube.com/watch?v=12345</video_id>\n</video_ids>",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2600,
+        1880
+      ],
+      "id": "9bdb056a-b49b-4608-95d6-0d944a18714c",
+      "name": "Search Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "video_transcript_query",
+        "toolDescription": "Search for relevant videos from the vector store  using a search query.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 6,
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        2140
+      ],
+      "id": "16448e42-6c4e-41b3-9112-beb79f344314",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3f0d1df2-cad9-4777-aa40-06215e4580ec",
+              "name": "data",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3140,
+        1860
+      ],
+      "id": "cdc150df-09e8-4fb9-9219-9fab294dcaf3",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "videos",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "video_id",
+              "keyValue": "={{ $fromAI('videoId') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        2120
+      ],
+      "id": "4debc791-631a-4cae-a57d-25c7571039b8",
+      "name": "get_video_by_videoId",
+      "credentials": {
+        "supabaseApi": {
+          "id": "T0ZmenS5Ym9I2jDG",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.session_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        1520
+      ],
+      "id": "18642ff8-a9ea-42ca-a157-9b9d44afdb6e",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "url": "=https://helper-api.dominik-fretz.workers.dev/api/transcript/{{ $('Code').item.json.videoId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2540,
+        -480
+      ],
+      "id": "63208b52-0cf6-45b4-80ea-17735e45aca8",
+      "name": "Get Transcript and video Info",
+      "retryOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tSyE8h96u3D4X2sD",
+          "name": "Helper-api auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Get Transcript  HTTP Endpoint\n\nThis is a custom endpoint - for example hosted on cloudfare - to get the video transcript and info (title, description, channel).\n\nThis could probably be done with n8n extensions or sub workflows. ",
+        "height": 363,
+        "width": 350,
+        "color": 7
+      },
+      "id": "df151ead-062c-4635-a0a2-0105251764f5",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        -280
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "codewithpassion.app.n8n.cloud",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+            "content-length": "207",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "accept-language": "en-AU,en-US;q=0.9,en-GB;q=0.8,en;q=0.7,de;q=0.6",
+            "authorization": "Bearer AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "90949feab01552a0-TLH",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "origin": "https://studio.ottomator.ai",
+            "priority": "u=1, i",
+            "referer": "https://studio.ottomator.ai/",
+            "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2, 172.69.180.168",
+            "x-forwarded-host": "codewithpassion.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-8-86454fd949-ms967",
+            "x-is-trusted": "yes",
+            "x-real-ip": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "query": "https://www.youtube.com/watch?v=PEI_ePNNfJQ",
+            "session_id": "f2891dbc-cad8-473a-939c-813952ca163b",
+            "user_id": "google-oauth2|105174866370777381496",
+            "request_id": "ff37bc64-3f4a-44e1-880c-f1a0b9cbd557"
+          },
+          "webhookUrl": "https://codewithpassion.app.n8n.cloud/webhook/9a6c4630-b422-4d42-b894-81ecfe881ffe",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prep Input Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Input Fields": {
+      "main": [
+        [
+          {
+            "node": "Add User Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add User Message to DB": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Tag generator agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Summarize agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Search Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add AI Message to DB": {
+      "main": [
+        [
+          {
+            "node": "Prep Output Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Output Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return text2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Check if video exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine transcript": {
+      "main": [
+        [
+          {
+            "node": "Summarize agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tag generator agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Tag generator agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Summarize agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag generator agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Summarize agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Add video to supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if video exists": {
+      "main": [
+        [
+          {
+            "node": "If row exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row exists": {
+      "main": [
+        [
+          {
+            "node": "Return text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Transcript and video Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return text": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add video to supabase": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert documents",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Insert documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert documents",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert documents": {
+      "main": [
+        [
+          {
+            "node": "Video added successfully",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video added successfully": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Add User Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return text2": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Gather fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gather fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video Transcript": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "Search Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_video_by_videoId": {
+      "ai_tool": [
+        [
+          {
+            "node": "Search Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Transcript and video Info": {
+      "main": [
+        [
+          {
+            "node": "Combine transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "159d9395-ab9a-45ca-8e99-f4a14cf6d79c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "73752d32404a3d730b68a92041a4b856188b020d33f9843efade7596a4e37a04"
+  },
+  "id": "yL1n1U2BJajoDXvq",
+  "tags": [
+    {
+      "createdAt": "2025-01-21T16:56:56.441Z",
+      "updatedAt": "2025-01-21T16:56:56.441Z",
+      "id": "H2mqHT7CHS3jbxqm",
+      "name": "studio-test"
+    }
+  ]
+}
