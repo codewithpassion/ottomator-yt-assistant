@@ -17,18 +17,18 @@
           ]
         }
       },
-      "id": "2b95d58e-b917-4d50-bfe5-1bfc6584a040",
+      "id": "708f6008-9b3f-46b1-8003-e638c989d979",
       "name": "Add User Message to DB",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1180,
-        120
+        -180,
+        1060
       ],
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -48,18 +48,18 @@
           ]
         }
       },
-      "id": "e2e1964f-1359-4301-aad4-85218efcab64",
+      "id": "390e219f-ea4e-40f3-b03a-2fe3eb37d61e",
       "name": "Add AI Message to DB",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5040,
-        660
+        3680,
+        1600
       ],
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -95,13 +95,13 @@
         },
         "options": {}
       },
-      "id": "fdc833f7-e241-4de6-928d-2de4729b8d86",
+      "id": "0105b031-e5fa-44f8-bd34-5a8c127d29e7",
       "name": "Prep Input Fields",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        920,
-        320
+        -440,
+        1260
       ]
     },
     {
@@ -124,13 +124,13 @@
         },
         "options": {}
       },
-      "id": "f31710a6-4d4f-462a-bda7-1b3f1d2cd7e0",
+      "id": "e1648795-1728-46f2-ad45-8b04b28677eb",
       "name": "Prep Output Fields",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5340,
-        660
+        3980,
+        1600
       ]
     },
     {
@@ -143,19 +143,19 @@
           "allowedOrigins": "*"
         }
       },
-      "id": "cf3ccea6-f390-48dd-9f2e-052015369212",
+      "id": "c704dcae-0f2f-4fbb-b85e-55bcaadaedef",
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        680,
-        320
+        -680,
+        1260
       ],
       "webhookId": "9a6c4630-b422-4d42-b894-81ecfe881ffe",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "KZZhiJiNWLcgxGNa",
-          "name": "Webhook Auth"
+          "id": "pRjHzcrlEkodXNSC",
+          "name": "Header Auth account"
         }
       }
     },
@@ -171,10 +171,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1360,
-        -80
+        0,
+        860
       ],
-      "id": "2ee54c88-6fc7-449d-9bfa-4c0a105b44df",
+      "id": "2d06f943-de84-45f7-a43b-948026bac4ff",
       "name": "AI Agent"
     },
     {
@@ -185,14 +185,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
       "typeVersion": 1.2,
       "position": [
-        1340,
-        -700
+        -20,
+        240
       ],
-      "id": "1f7d580e-3ce1-4b7b-9806-d94c60d2325c",
+      "id": "6206e935-0759-4128-8568-a5a66839219d",
       "name": "Anthropic Chat Model",
       "credentials": {
         "anthropicApi": {
-          "id": "awt22UtMqvHYjwbw",
+          "id": "tx0XfkawlAKVhjKp",
           "name": "Anthropic account"
         }
       }
@@ -300,10 +300,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1740,
-        -80
+        380,
+        860
       ],
-      "id": "29664304-b018-471a-b389-98c479973a58",
+      "id": "8da89f8a-c69e-4f06-ac99-8304abaa17e9",
       "name": "Switch"
     },
     {
@@ -313,10 +313,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1540,
-        140
+        180,
+        1080
       ],
-      "id": "fed36d30-26a4-4c77-b719-96f9f2228397",
+      "id": "e2fad743-ef62-46f5-adca-d5991fe6bf18",
       "name": "Structured Output Parser"
     },
     {
@@ -326,10 +326,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1980,
-        -320
+        620,
+        620
       ],
-      "id": "f1170825-6bcd-425f-aead-cf57a42cf1b6",
+      "id": "11d38b9d-7adb-4889-a71f-40c40fd90813",
       "name": "Code"
     },
     {
@@ -339,10 +339,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2800,
-        -460
+        1440,
+        480
       ],
-      "id": "8b0dca56-8eab-42cf-9bd2-b4d157127f78",
+      "id": "578ce7e1-5d2b-48eb-984c-223ed214c8a0",
       "name": "Combine transcript"
     },
     {
@@ -357,10 +357,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        3060,
-        -520
+        1700,
+        420
       ],
-      "id": "025c2695-0fee-4071-bfa0-81a515255b8e",
+      "id": "85ee00b0-a7f9-44ce-b2f2-0eb199a434bb",
       "name": "Summarize agent"
     },
     {
@@ -375,10 +375,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2980,
-        -200
+        1620,
+        740
       ],
-      "id": "66f9b7c3-90c4-4ea3-8e62-8bdbfc164df4",
+      "id": "72f92041-1082-4e2c-94a5-59c8fa6fb6ac",
       "name": "Tag generator agent"
     },
     {
@@ -388,10 +388,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        3160,
-        60
+        1800,
+        1000
       ],
-      "id": "089cf001-66c3-453a-81a9-74822e0d5b6f",
+      "id": "e3f623c4-4c54-4721-a1ae-02333d1e2735",
       "name": "Structured Output Parser1"
     },
     {
@@ -401,10 +401,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        3220,
-        -700
+        1860,
+        240
       ],
-      "id": "00ffc35d-818b-49be-aa99-06f2d1cc83c9",
+      "id": "201b3bdc-59d0-4fc7-a952-360b5793a62a",
       "name": "Structured Output Parser2"
     },
     {
@@ -412,10 +412,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        3340,
-        -220
+        1980,
+        720
       ],
-      "id": "2b0f7c1b-7741-4148-ab93-e91dd8e31d59",
+      "id": "ea53b4c1-2a0f-4259-ac4d-c6a0d69154f2",
       "name": "Merge"
     },
     {
@@ -432,13 +432,13 @@
           }
         }
       },
-      "id": "6e8badc5-93d0-418b-9d3b-4b11fa2055d5",
+      "id": "5e4791a8-630c-4c91-ad0d-5921a522a9bb",
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        5600,
-        660
+        4240,
+        1600
       ]
     },
     {
@@ -492,18 +492,18 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3560,
-        -200
+        2200,
+        740
       ],
-      "id": "cc455cc0-1f1c-4af8-a51a-c44cbadf6b60",
+      "id": "24d2a80e-5b9c-4033-ac9b-6e1cb2371363",
       "name": "Add video to supabase",
       "alwaysOutputData": false,
       "notesInFlow": false,
       "executeOnce": true,
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -517,16 +517,16 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2120,
-        -320
+        760,
+        620
       ],
-      "id": "825c25a6-387c-4e73-8770-f789ba83292c",
+      "id": "6bbcc20c-5ca1-4820-8123-c4ebf06e6370",
       "name": "Check if video exists",
       "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -558,10 +558,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2300,
-        -420
+        940,
+        520
       ],
-      "id": "a5113756-a5a7-4f96-b0a4-c21346132e87",
+      "id": "0dc58b33-cf88-46e0-b845-99f53ed69f0f",
       "name": "If row exists"
     },
     {
@@ -571,10 +571,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2460,
-        140
+        1100,
+        1080
       ],
-      "id": "a4fe1cb3-76e6-4455-a8d4-8b99bc62963c",
+      "id": "e4bddb36-e9fb-471c-9635-c4b1ac91a9d0",
       "name": "Return text"
     },
     {
@@ -593,15 +593,15 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        4100,
-        -320
+        2740,
+        620
       ],
-      "id": "1e9d091c-54f2-491b-b6f2-b55036d3b9f1",
+      "id": "7696d6e9-b4d6-4747-b15e-e11bb79954a0",
       "name": "Insert documents",
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -612,14 +612,14 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1360,
-        -940
+        0,
+        0
       ],
-      "id": "6d98cfed-1148-4f30-9910-e844e7aae64f",
+      "id": "3b760a95-a045-413c-b199-889aff1c387b",
       "name": "Embeddings OpenAI",
       "credentials": {
         "openAiApi": {
-          "id": "IYZp7DISCE2Xdos1",
+          "id": "ixcgWmmQxnmU6uZx",
           "name": "OpenAi account"
         }
       }
@@ -641,10 +641,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3780,
-        -280
+        2420,
+        660
       ],
-      "id": "5e6ee0b8-140a-4cff-ac8d-6521f61e0406",
+      "id": "1252fca3-eb42-4d5e-b463-49cf085ab3d3",
       "name": "Edit Fields"
     },
     {
@@ -665,10 +665,10 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1,
       "position": [
-        4100,
-        -60
+        2740,
+        880
       ],
-      "id": "0e76621b-8c4f-41be-89bc-6fa4083d25ef",
+      "id": "f9631847-e206-498a-bc53-bc106646ae77",
       "name": "Default Data Loader"
     },
     {
@@ -679,10 +679,10 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        4200,
-        160
+        2840,
+        1100
       ],
-      "id": "4b3a3eb1-1eb7-45a4-a0b3-8ced8fc45f7b",
+      "id": "064fe86e-77c9-4c71-90c1-e7354355bc0a",
       "name": "Recursive Character Text Splitter"
     },
     {
@@ -692,10 +692,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4520,
-        200
+        3160,
+        1140
       ],
-      "id": "6fc4b9a0-b1bb-4d39-b3d9-9a8d0e5088e7",
+      "id": "3eea24ec-129e-4d39-9c43-29a51b5eb7f4",
       "name": "Video added successfully"
     },
     {
@@ -705,10 +705,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2480,
-        840
+        1120,
+        1780
       ],
-      "id": "6ed0e4d8-79ea-454b-8fc3-711ee1d55f90",
+      "id": "2220463b-96e3-4538-9171-e7db97f9ff19",
       "name": "Return text2"
     },
     {
@@ -718,13 +718,12 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        700,
-        60
+        -660,
+        1000
       ],
-      "id": "23c648f7-e9ac-4c32-8111-effb33c95237",
+      "id": "16a730cb-97f4-47ca-981d-56412d857432",
       "name": "When chat message received",
-      "webhookId": "a023c538-05ea-4324-9c6d-44653d9a44d4",
-      "disabled": true
+      "webhookId": "a023c538-05ea-4324-9c6d-44653d9a44d4"
     },
     {
       "parameters": {
@@ -749,10 +748,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        920,
-        60
+        -440,
+        1000
       ],
-      "id": "51dfdcf2-0e01-439a-a8a2-b1697557116c",
+      "id": "8f7f1592-426e-4afb-8879-9c2593ba73ab",
       "name": "Edit Fields1"
     },
     {
@@ -762,13 +761,13 @@
         "width": 1470,
         "color": 2
       },
-      "id": "2179db98-89d1-4e4a-94ff-889ce3d89a7e",
+      "id": "c162fc96-faed-4115-949a-a57c769cf93f",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2380,
-        1040
+        1020,
+        1980
       ]
     },
     {
@@ -778,13 +777,13 @@
         "width": 2970,
         "color": 4
       },
-      "id": "745c035c-aadd-486e-80c6-5f57ffa3c36a",
+      "id": "154952f8-306c-46dc-b1ae-9d053f6e9576",
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1960,
-        -820
+        600,
+        120
       ]
     },
     {
@@ -803,15 +802,15 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2700,
-        1180
+        1340,
+        2120
       ],
-      "id": "ce9d33a2-1aa7-4e7b-a09a-4455581a146c",
+      "id": "6a2ecc19-61fc-4d5e-84a5-945170adc113",
       "name": "Supabase",
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -822,10 +821,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2440,
-        1180
+        1080,
+        2120
       ],
-      "id": "1fe22947-7e82-40ed-a730-f4f25bfe9d0d",
+      "id": "2835bc83-a49e-4b4d-8c48-c080c7236aef",
       "name": "Code1"
     },
     {
@@ -879,6 +878,12 @@
               "name": "videoId",
               "value": "={{ $json.video_id }}",
               "type": "string"
+            },
+            {
+              "id": "e08c77c9-0905-4038-8628-1083336a2044",
+              "name": "session_id",
+              "value": "={{ $('Edit Fields1').item.json.session_id }}",
+              "type": "string"
             }
           ]
         },
@@ -887,10 +892,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2940,
-        1180
+        1580,
+        2120
       ],
-      "id": "6d44537f-58e7-44d4-93e9-4474f2d3efe5",
+      "id": "f0e7d03e-77c8-4011-ab9a-400146037498",
       "name": "Gather fields"
     },
     {
@@ -902,10 +907,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        3280,
-        1140
+        1920,
+        2080
       ],
-      "id": "1f0e8024-91a3-40cb-a0a5-8e23f6cf075d",
+      "id": "d02bc9b5-e4c9-42aa-8f99-188997f4989c",
       "name": "AI Agent1"
     },
     {
@@ -925,10 +930,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3680,
-        1140
+        2320,
+        2080
       ],
-      "id": "2b3ba87a-58d7-4bbd-844a-ad1ca4e7779c",
+      "id": "678a40c7-5b97-4ad2-9b5f-45b5020e7245",
       "name": "Edit Fields2"
     },
     {
@@ -950,15 +955,15 @@
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [
-        3520,
-        1400
+        2160,
+        2340
       ],
-      "id": "7fb3c229-ef69-47e1-a50d-e60ac357d703",
+      "id": "c380787c-e8a9-4c0d-86b3-b57a3bfd08b6",
       "name": "Get Video Transcript",
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -969,13 +974,13 @@
         "width": 1010,
         "color": 3
       },
-      "id": "3df10fa4-51a3-4553-bcdf-edf4aee02be3",
+      "id": "ffe4bfca-8893-4471-8894-0449699da364",
       "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        4920,
-        540
+        3560,
+        1480
       ]
     },
     {
@@ -985,13 +990,13 @@
         "width": 1470,
         "color": 7
       },
-      "id": "d0d85d99-2ebc-43b0-b4c4-c75b7abd7b18",
+      "id": "7aef83be-d7a1-4037-adf0-ee6364c0513c",
       "name": "Sticky Note5",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2380,
-        1720
+        1020,
+        2660
       ]
     },
     {
@@ -1003,10 +1008,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2600,
-        1880
+        1240,
+        2820
       ],
-      "id": "9bdb056a-b49b-4608-95d6-0d944a18714c",
+      "id": "82e01aff-0a8d-4a99-a390-6b870d8ab7dd",
       "name": "Search Agent"
     },
     {
@@ -1028,15 +1033,15 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        2820,
-        2140
+        1460,
+        3080
       ],
-      "id": "16448e42-6c4e-41b3-9112-beb79f344314",
+      "id": "e3fd1bdc-0be5-4dc6-8947-cfe80e5662d6",
       "name": "Supabase Vector Store",
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -1057,10 +1062,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3140,
-        1860
+        1780,
+        2800
       ],
-      "id": "cdc150df-09e8-4fb9-9219-9fab294dcaf3",
+      "id": "f36abd78-002a-4363-8c02-6f24a5aacc9c",
       "name": "Edit Fields3"
     },
     {
@@ -1079,15 +1084,15 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        2660,
-        2120
+        1300,
+        3060
       ],
-      "id": "4debc791-631a-4cae-a57d-25c7571039b8",
+      "id": "fe467c98-fc9a-488c-b825-230f50a61686",
       "name": "get_video_by_videoId",
       "credentials": {
         "supabaseApi": {
-          "id": "T0ZmenS5Ym9I2jDG",
-          "name": "Supabase account 2"
+          "id": "nlvpfDPpbZS5Qe3i",
+          "name": "Supabase account"
         }
       }
     },
@@ -1099,10 +1104,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1920,
-        1520
+        560,
+        2460
       ],
-      "id": "18642ff8-a9ea-42ca-a157-9b9d44afdb6e",
+      "id": "f36c520b-ac96-4642-bbfb-de63ec5d7c3e",
       "name": "Window Buffer Memory"
     },
     {
@@ -1115,16 +1120,16 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2540,
-        -480
+        1180,
+        460
       ],
-      "id": "63208b52-0cf6-45b4-80ea-17735e45aca8",
+      "id": "952aacc8-7b80-4a87-ade1-96a93874596f",
       "name": "Get Transcript and video Info",
       "retryOnFail": true,
       "credentials": {
         "httpHeaderAuth": {
-          "id": "tSyE8h96u3D4X2sD",
-          "name": "Helper-api auth"
+          "id": "pRjHzcrlEkodXNSC",
+          "name": "Header Auth account"
         }
       }
     },
@@ -1135,13 +1140,13 @@
         "width": 350,
         "color": 7
       },
-      "id": "df151ead-062c-4635-a0a2-0105251764f5",
+      "id": "66ff40f7-6a9d-408f-9c78-6b86ccbbd081",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2480,
-        -280
+        1120,
+        660
       ]
     }
   ],
@@ -1712,22 +1717,22 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "159d9395-ab9a-45ca-8e99-f4a14cf6d79c",
+  "versionId": "fdfc79cd-52a7-4a22-b7a7-b297b184d31a",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "73752d32404a3d730b68a92041a4b856188b020d33f9843efade7596a4e37a04"
+    "instanceId": "6cde8124a36252c1c60e3ea51461905ba5374a11dbae8af8796dac25613a3226"
   },
-  "id": "yL1n1U2BJajoDXvq",
+  "id": "XOOfn39mm8kHQNaK",
   "tags": [
     {
-      "createdAt": "2025-01-21T16:56:56.441Z",
-      "updatedAt": "2025-01-21T16:56:56.441Z",
-      "id": "H2mqHT7CHS3jbxqm",
-      "name": "studio-test"
+      "name": "studio-test",
+      "id": "10iRd2m73tDxwiuk",
+      "createdAt": "2025-02-03T14:23:00.708Z",
+      "updatedAt": "2025-02-03T14:23:00.708Z"
     }
   ]
 }
