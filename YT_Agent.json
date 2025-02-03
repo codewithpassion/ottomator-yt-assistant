@@ -1,5 +1,5 @@
 {
-  "name": "YT-Agent",
+  "name": "YT Agent",
   "nodes": [
     {
       "parameters": {
@@ -334,19 +334,6 @@
     },
     {
       "parameters": {
-        "jsCode": "\nreturn {transcript: $input.first().json.data.transcript.map(item => item.text).join(\" \") }"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1440,
-        480
-      ],
-      "id": "578ce7e1-5d2b-48eb-984c-223ed214c8a0",
-      "name": "Combine transcript"
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $json.transcript }}",
         "hasOutputParser": true,
@@ -357,8 +344,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1700,
-        420
+        2280,
+        400
       ],
       "id": "85ee00b0-a7f9-44ce-b2f2-0eb199a434bb",
       "name": "Summarize agent"
@@ -369,14 +356,14 @@
         "text": "={{ $json.transcript }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are an expert in generating tags for youtube videos to classify them, and allow users to search for them later\n\nPlease generate at least 10 tags but as many as you feel required.\n\nExample output:\n{ \"tags\": [ \"tag1\", \"tag2\" ] }\n\nIMPORTANT:\nOnly return the json result, nothing else!"
+          "systemMessage": "=You are an expert in generating tags for youtube videos to classify them, and allow users to search for them later\n\nPlease generate at least 10 tags but as many as you feel required.\n\nExample output:\n{ \"tags\": [ \"tag1\", \"tag2\" ] }\n\nIMPORTANT:\nOnly return the json result, nothing else!\nDO NOT respond with 'I'll generate tags ...'\nJust return the json!"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1620,
-        740
+        2260,
+        720
       ],
       "id": "72f92041-1082-4e2c-94a5-59c8fa6fb6ac",
       "name": "Tag generator agent"
@@ -388,8 +375,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1800,
-        1000
+        2380,
+        980
       ],
       "id": "e3f623c4-4c54-4721-a1ae-02333d1e2735",
       "name": "Structured Output Parser1"
@@ -401,8 +388,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1860,
-        240
+        2440,
+        220
       ],
       "id": "201b3bdc-59d0-4fc7-a952-360b5793a62a",
       "name": "Structured Output Parser2"
@@ -412,8 +399,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        1980,
-        720
+        2600,
+        580
       ],
       "id": "ea53b4c1-2a0f-4259-ac4d-c6a0d69154f2",
       "name": "Merge"
@@ -452,15 +439,15 @@
             },
             {
               "fieldId": "title",
-              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.title }}"
+              "fieldValue": "={{ $('Extract video details').first().json.title }}"
             },
             {
               "fieldId": "channel",
-              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.channelName }}"
+              "fieldValue": "={{ $('Extract video details').first().json.channelName }}"
             },
             {
               "fieldId": "description",
-              "fieldValue": "={{ $('Get Transcript and video Info').item.json.data.videoInfo.description }}"
+              "fieldValue": "={{ $('Extract video details').first().json.description }}"
             },
             {
               "fieldId": "summary",
@@ -480,7 +467,7 @@
             },
             {
               "fieldId": "transcript",
-              "fieldValue": "={{ $('Combine transcript').item.json.transcript }}"
+              "fieldValue": "={{ $('Join transcript in code').first().json.transcript }}"
             },
             {
               "fieldId": "tags",
@@ -492,8 +479,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2200,
-        740
+        2780,
+        600
       ],
       "id": "24d2a80e-5b9c-4033-ac9b-6e1cb2371363",
       "name": "Add video to supabase",
@@ -558,8 +545,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        940,
-        520
+        920,
+        580
       ],
       "id": "0dc58b33-cf88-46e0-b845-99f53ed69f0f",
       "name": "If row exists"
@@ -593,8 +580,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        2740,
-        620
+        3140,
+        600
       ],
       "id": "7696d6e9-b4d6-4747-b15e-e11bb79954a0",
       "name": "Insert documents",
@@ -641,8 +628,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2420,
-        660
+        2960,
+        600
       ],
       "id": "1252fca3-eb42-4d5e-b463-49cf085ab3d3",
       "name": "Edit Fields"
@@ -665,8 +652,8 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1,
       "position": [
-        2740,
-        880
+        3040,
+        280
       ],
       "id": "f9631847-e206-498a-bc53-bc106646ae77",
       "name": "Default Data Loader"
@@ -679,24 +666,11 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        2840,
-        1100
+        3400,
+        260
       ],
       "id": "064fe86e-77c9-4c71-90c1-e7354355bc0a",
       "name": "Recursive Character Text Splitter"
-    },
-    {
-      "parameters": {
-        "jsCode": "\nconst title = $('Get Transcript and video Info').first().json.data.videoInfo.title;\nconst channel = $('Get Transcript and video Info').first().json.data.videoInfo.channelName;\nreturn {data: `The video '${title}' by ${channel} was added successfully!` };"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3160,
-        1140
-      ],
-      "id": "3eea24ec-129e-4d39-9c43-29a51b5eb7f4",
-      "name": "Video added successfully"
     },
     {
       "parameters": {
@@ -705,8 +679,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
-        1780
+        1100,
+        1600
       ],
       "id": "2220463b-96e3-4538-9171-e7db97f9ff19",
       "name": "Return text2"
@@ -757,7 +731,7 @@
     {
       "parameters": {
         "content": "# Summarize \n",
-        "height": 543,
+        "height": 483,
         "width": 1470,
         "color": 2
       },
@@ -915,60 +889,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "87f25074-de10-4584-9ac3-417409298c3e",
-              "name": "data",
-              "value": "={{ $json.output }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2320,
-        2080
-      ],
-      "id": "678a40c7-5b97-4ad2-9b5f-45b5020e7245",
-      "name": "Edit Fields2"
-    },
-    {
-      "parameters": {
-        "toolDescription": "Get the transcript of a video by supplying the video_id",
-        "url": "=https://wttckgbospxslfaryued.supabase.co/rest/v1/videos?video_id=eq.{video_id}&select=id&limit=1",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "supabaseApi",
-        "placeholderDefinitions": {
-          "values": [
-            {
-              "name": "video_id",
-              "description": "The id of the video",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-      "typeVersion": 1.1,
-      "position": [
-        2160,
-        2340
-      ],
-      "id": "c380787c-e8a9-4c0d-86b3-b57a3bfd08b6",
-      "name": "Get Video Transcript",
-      "credentials": {
-        "supabaseApi": {
-          "id": "nlvpfDPpbZS5Qe3i",
-          "name": "Supabase account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "content": "# Output",
         "height": 383,
         "width": 1010,
@@ -1047,29 +967,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "3f0d1df2-cad9-4777-aa40-06215e4580ec",
-              "name": "data",
-              "value": "={{ $json.output }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1780,
-        2800
-      ],
-      "id": "f36abd78-002a-4363-8c02-6f24a5aacc9c",
-      "name": "Edit Fields3"
-    },
-    {
-      "parameters": {
         "operation": "get",
         "tableId": "videos",
         "filters": {
@@ -1112,42 +1009,252 @@
     },
     {
       "parameters": {
-        "url": "=https://helper-api.dominik-fretz.workers.dev/api/transcript/{{ $('Code').item.json.videoId }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $json.transcriptUrl }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1180,
-        460
+        1640,
+        260
       ],
-      "id": "952aacc8-7b80-4a87-ade1-96a93874596f",
-      "name": "Get Transcript and video Info",
-      "retryOnFail": true,
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "pRjHzcrlEkodXNSC",
-          "name": "Header Auth account"
-        }
-      }
+      "id": "a50417e8-bb36-4d05-867d-487d4e9a09a2",
+      "name": "Fetch transcript"
     },
     {
       "parameters": {
-        "content": "## Get Transcript  HTTP Endpoint\n\nThis is a custom endpoint - for example hosted on cloudfare - to get the video transcript and info (title, description, channel).\n\nThis could probably be done with n8n extensions or sub workflows. ",
-        "height": 363,
-        "width": 350,
+        "url": "=https://www.youtube.com/watch?v={{ $json.video_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        440
+      ],
+      "id": "0b940a4a-62e7-4d29-ac15-4f57018a2df8",
+      "name": "Get video page"
+    },
+    {
+      "parameters": {
+        "options": {
+          "normalize": false
+        }
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        260
+      ],
+      "id": "25360a20-9177-4980-ad0a-edede58592d6",
+      "name": "XML"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "69d020a0-5116-4e63-809e-8c5cb2bb2b09",
+              "name": "video_id",
+              "value": "={{ $('Code').item.json.videoId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        520
+      ],
+      "id": "f45d845b-6b5e-4054-9cee-8a8ced9c527a",
+      "name": "Get Video ID"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "01781b3b-d819-4abf-8a46-626454d34dae",
+              "name": "title",
+              "value": "={{ $json.items[0].snippet.title }}",
+              "type": "string"
+            },
+            {
+              "id": "f5207da6-ed58-4e90-bb6f-077b90908efa",
+              "name": "description",
+              "value": "={{ $json.items[0].snippet.description }}",
+              "type": "string"
+            },
+            {
+              "id": "fd168156-4a06-411d-8a3f-5b7938d865eb",
+              "name": "channelName",
+              "value": "={{ $json.items[0].snippet.channelTitle }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1860,
+        520
+      ],
+      "id": "3bee8282-4bf3-46e5-bf2b-185a142ae125",
+      "name": "Extract video details"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2080,
+        520
+      ],
+      "id": "63e8889f-6455-4715-85f4-e1d19b1bb24b",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "# Get Transcript and video info",
+        "height": 483,
+        "width": 1170,
         "color": 7
       },
-      "id": "66ff40f7-6a9d-408f-9c78-6b86ccbbd081",
-      "name": "Sticky Note",
+      "id": "eb3d1f4d-579e-4cbb-843d-353a44f486c0",
+      "name": "Sticky Note6",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1120,
-        660
+        1040,
+        220
       ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c200573-d261-438a-98c2-7a0624c4df98",
+              "name": "=data",
+              "value": "=The video '{{ $('Extract video details').first().json.title }}' by {{ $('Extract video details').first().json.channelName }} was added successfully!`",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3300,
+        940
+      ],
+      "id": "6f69585a-09f5-49ac-aaff-1d229c58eaba",
+      "name": "Generate output message"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { transcript: $input.first().json.transcript.text.map(item => item._).join(' ')}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2060,
+        280
+      ],
+      "id": "7b34b39b-424b-4639-8987-47e87a9de9b8",
+      "name": "Join transcript in code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87f25074-de10-4584-9ac3-417409298c3e",
+              "name": "data",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2320,
+        2080
+      ],
+      "id": "678a40c7-5b97-4ad2-9b5f-45b5020e7245",
+      "name": "Gather output data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3f0d1df2-cad9-4777-aa40-06215e4580ec",
+              "name": "data",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1780,
+        2800
+      ],
+      "id": "f36abd78-002a-4363-8c02-6f24a5aacc9c",
+      "name": "Prepare output"
+    },
+    {
+      "parameters": {
+        "jsCode": "//console.log($input.first().json.data)\nconst html = $input.first().json.data;\n\nconst splittedHTML = html.split('\"captions\":');\nif (splittedHTML.length <= 1) {\n  if (html.includes('class=\"g-recaptcha\"')) {\n    return { success: false, error: \"Too Many Requests\" }\n  }\n  if (!html.includes('\"playabilityStatus\":')) {\n    return { success: false, error: \"Transcript unavailable 1\" }\n  }\n  return { success: false, error: \"Transcript disabled \" }\n}\n\nconst captions = (() => {\n  try {\n    return JSON.parse(\n      splittedHTML[1].split(',\"videoDetails')[0].replace('\\n', '')\n    );\n  } catch (e) {\n    return undefined;\n  }\n})()?.['playerCaptionsTracklistRenderer'];\n\nif (!captions) {\n  return { success: false, error: \"Transcript disabled \" }\n}\n\nif (!('captionTracks' in captions)) {\n  return { success: false, error: \"Transcript not available 2\" }\n}\n\nconst transcriptUrl = captions.captionTracks[0].baseUrl\n\nreturn { success: true, transcriptUrl, video_id: $ }\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1480,
+        460
+      ],
+      "id": "88973c28-4713-44c1-bbc0-7cfaaa793181",
+      "name": "Extract transcript url"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/videos?part=snippet&id={{ $('Get Video ID').item.json.video_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        500
+      ],
+      "id": "d7bcc909-a06c-4603-b4a7-97f5874537b0",
+      "name": "Fetch Video Details",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "So3Pe6k3PLS9fuHk",
+          "name": "YT Qury Auth"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1190,7 +1297,7 @@
           "params": {},
           "query": {},
           "body": {
-            "query": "https://www.youtube.com/watch?v=PEI_ePNNfJQ",
+            "query": "https://www.youtube.com/watch?v=ZsRKDxS-tzM",
             "session_id": "f2891dbc-cad8-473a-939c-813952ca163b",
             "user_id": "google-oauth2|105174866370777381496",
             "request_id": "ff37bc64-3f4a-44e1-880c-f1a0b9cbd557"
@@ -1353,22 +1460,6 @@
         ]
       ]
     },
-    "Combine transcript": {
-      "main": [
-        [
-          {
-            "node": "Summarize agent",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Tag generator agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Structured Output Parser1": {
       "ai_outputParser": [
         [
@@ -1446,7 +1537,7 @@
         ],
         [
           {
-            "node": "Get Transcript and video Info",
+            "node": "Get Video ID",
             "type": "main",
             "index": 0
           }
@@ -1528,18 +1619,7 @@
       "main": [
         [
           {
-            "node": "Video added successfully",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Video added successfully": {
-      "main": [
-        [
-          {
-            "node": "Add AI Message to DB",
+            "node": "Generate output message",
             "type": "main",
             "index": 0
           }
@@ -1616,30 +1696,8 @@
       "main": [
         [
           {
-            "node": "Edit Fields2",
+            "node": "Gather output data",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        [
-          {
-            "node": "Add AI Message to DB",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Video Transcript": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1660,18 +1718,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields3": {
-      "main": [
-        [
-          {
-            "node": "Add AI Message to DB",
+            "node": "Prepare output",
             "type": "main",
             "index": 0
           }
@@ -1705,11 +1752,142 @@
         ]
       ]
     },
-    "Get Transcript and video Info": {
+    "Get video page": {
       "main": [
         [
           {
-            "node": "Combine transcript",
+            "node": "Extract transcript url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch transcript": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XML": {
+      "main": [
+        [
+          {
+            "node": "Join transcript in code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video ID": {
+      "main": [
+        [
+          {
+            "node": "Get video page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract video details": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Summarize agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tag generator agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate output message": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Join transcript in code": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gather output data": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare output": {
+      "main": [
+        [
+          {
+            "node": "Add AI Message to DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract transcript url": {
+      "main": [
+        [
+          {
+            "node": "Fetch transcript",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Video Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Video Details": {
+      "main": [
+        [
+          {
+            "node": "Extract video details",
             "type": "main",
             "index": 0
           }
@@ -1721,7 +1899,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "fdfc79cd-52a7-4a22-b7a7-b297b184d31a",
+  "versionId": "18a8e374-aa96-426e-bdec-315085a1f355",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "6cde8124a36252c1c60e3ea51461905ba5374a11dbae8af8796dac25613a3226"
@@ -1729,10 +1907,10 @@
   "id": "XOOfn39mm8kHQNaK",
   "tags": [
     {
-      "name": "studio-test",
-      "id": "10iRd2m73tDxwiuk",
       "createdAt": "2025-02-03T14:23:00.708Z",
-      "updatedAt": "2025-02-03T14:23:00.708Z"
+      "updatedAt": "2025-02-03T14:23:00.708Z",
+      "id": "10iRd2m73tDxwiuk",
+      "name": "studio-test"
     }
   ]
 }
