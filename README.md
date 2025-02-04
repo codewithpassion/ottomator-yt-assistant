@@ -22,6 +22,7 @@ The agent is a n8n agent - based on Claude Haiku - but you can probably just swa
 
 - Credentials for Agent0
 - Credentials for Youtube Data API (Used in the 'Fetch video details' node)
+- Credentials for https://supadata.ai to fetch the Transcript
 - Credentials for OpenAI (embeddings)
 - Credentials for Antrhhropic Claude
 - create the 'videos' table in Supabase via `supabase.table.sql`

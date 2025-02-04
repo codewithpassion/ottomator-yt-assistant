@@ -22,8 +22,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -180,
-        1060
+        -200,
+        1080
       ],
       "credentials": {
         "supabaseApi": {
@@ -53,8 +53,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3680,
-        1600
+        3660,
+        1620
       ],
       "credentials": {
         "supabaseApi": {
@@ -100,8 +100,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -440,
-        1260
+        -460,
+        1280
       ]
     },
     {
@@ -129,8 +129,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3980,
-        1600
+        3960,
+        1620
       ]
     },
     {
@@ -138,7 +138,7 @@
         "httpMethod": "POST",
         "path": "9a6c4630-b422-4d42-b894-81ecfe881ffe",
         "authentication": "headerAuth",
-        "responseMode": "responseNode",
+        "responseMode": "=responseNode",
         "options": {
           "allowedOrigins": "*"
         }
@@ -148,8 +148,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -680,
-        1260
+        -700,
+        1280
       ],
       "webhookId": "9a6c4630-b422-4d42-b894-81ecfe881ffe",
       "credentials": {
@@ -157,7 +157,8 @@
           "id": "pRjHzcrlEkodXNSC",
           "name": "Header Auth account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -171,8 +172,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        0,
-        860
+        -20,
+        880
       ],
       "id": "2d06f943-de84-45f7-a43b-948026bac4ff",
       "name": "AI Agent"
@@ -185,8 +186,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
       "typeVersion": 1.2,
       "position": [
-        -20,
-        240
+        -40,
+        260
       ],
       "id": "6206e935-0759-4128-8568-a5a66839219d",
       "name": "Anthropic Chat Model",
@@ -300,8 +301,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        380,
-        860
+        360,
+        880
       ],
       "id": "8da89f8a-c69e-4f06-ac99-8304abaa17e9",
       "name": "Switch"
@@ -313,8 +314,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        180,
-        1080
+        160,
+        1100
       ],
       "id": "e2fad743-ef62-46f5-adca-d5991fe6bf18",
       "name": "Structured Output Parser"
@@ -326,8 +327,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        620,
-        620
+        600,
+        640
       ],
       "id": "11d38b9d-7adb-4889-a71f-40c40fd90813",
       "name": "Code"
@@ -344,8 +345,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2280,
-        400
+        2260,
+        420
       ],
       "id": "85ee00b0-a7f9-44ce-b2f2-0eb199a434bb",
       "name": "Summarize agent"
@@ -362,8 +363,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        2260,
-        720
+        2240,
+        740
       ],
       "id": "72f92041-1082-4e2c-94a5-59c8fa6fb6ac",
       "name": "Tag generator agent"
@@ -375,8 +376,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        2380,
-        980
+        2360,
+        1000
       ],
       "id": "e3f623c4-4c54-4721-a1ae-02333d1e2735",
       "name": "Structured Output Parser1"
@@ -388,8 +389,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        2440,
-        220
+        2420,
+        240
       ],
       "id": "201b3bdc-59d0-4fc7-a952-360b5793a62a",
       "name": "Structured Output Parser2"
@@ -399,8 +400,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        2600,
-        580
+        2580,
+        600
       ],
       "id": "ea53b4c1-2a0f-4259-ac4d-c6a0d69154f2",
       "name": "Merge"
@@ -424,8 +425,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        4240,
-        1600
+        4220,
+        1620
       ]
     },
     {
@@ -479,8 +480,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2780,
-        600
+        2760,
+        620
       ],
       "id": "24d2a80e-5b9c-4033-ac9b-6e1cb2371363",
       "name": "Add video to supabase",
@@ -504,8 +505,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        760,
-        620
+        740,
+        640
       ],
       "id": "6bbcc20c-5ca1-4820-8123-c4ebf06e6370",
       "name": "Check if video exists",
@@ -545,8 +546,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        920,
-        580
+        900,
+        600
       ],
       "id": "0dc58b33-cf88-46e0-b845-99f53ed69f0f",
       "name": "If row exists"
@@ -558,8 +559,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1100,
-        1080
+        1080,
+        1100
       ],
       "id": "e4bddb36-e9fb-471c-9635-c4b1ac91a9d0",
       "name": "Return text"
@@ -580,8 +581,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        3140,
-        600
+        3120,
+        620
       ],
       "id": "7696d6e9-b4d6-4747-b15e-e11bb79954a0",
       "name": "Insert documents",
@@ -599,8 +600,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        0,
-        0
+        -20,
+        20
       ],
       "id": "3b760a95-a045-413c-b199-889aff1c387b",
       "name": "Embeddings OpenAI",
@@ -628,8 +629,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2960,
-        600
+        2940,
+        620
       ],
       "id": "1252fca3-eb42-4d5e-b463-49cf085ab3d3",
       "name": "Edit Fields"
@@ -652,8 +653,8 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1,
       "position": [
-        3040,
-        280
+        3020,
+        300
       ],
       "id": "f9631847-e206-498a-bc53-bc106646ae77",
       "name": "Default Data Loader"
@@ -666,8 +667,8 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        3400,
-        260
+        3380,
+        280
       ],
       "id": "064fe86e-77c9-4c71-90c1-e7354355bc0a",
       "name": "Recursive Character Text Splitter"
@@ -679,8 +680,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1100,
-        1600
+        1080,
+        1620
       ],
       "id": "2220463b-96e3-4538-9171-e7db97f9ff19",
       "name": "Return text2"
@@ -692,8 +693,8 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -660,
-        1000
+        -680,
+        1020
       ],
       "id": "16a730cb-97f4-47ca-981d-56412d857432",
       "name": "When chat message received",
@@ -722,8 +723,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -440,
-        1000
+        -460,
+        1020
       ],
       "id": "8f7f1592-426e-4afb-8879-9c2593ba73ab",
       "name": "Edit Fields1"
@@ -740,8 +741,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1020,
-        1980
+        1000,
+        2000
       ]
     },
     {
@@ -756,8 +757,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        600,
-        120
+        580,
+        140
       ]
     },
     {
@@ -776,8 +777,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1340,
-        2120
+        1320,
+        2140
       ],
       "id": "6a2ecc19-61fc-4d5e-84a5-945170adc113",
       "name": "Supabase",
@@ -795,8 +796,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1080,
-        2120
+        1060,
+        2140
       ],
       "id": "2835bc83-a49e-4b4d-8c48-c080c7236aef",
       "name": "Code1"
@@ -866,8 +867,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1580,
-        2120
+        1560,
+        2140
       ],
       "id": "f0e7d03e-77c8-4011-ab9a-400146037498",
       "name": "Gather fields"
@@ -881,8 +882,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1920,
-        2080
+        1900,
+        2100
       ],
       "id": "d02bc9b5-e4c9-42aa-8f99-188997f4989c",
       "name": "AI Agent1"
@@ -899,8 +900,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        3560,
-        1480
+        3540,
+        1500
       ]
     },
     {
@@ -915,8 +916,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1020,
-        2660
+        1000,
+        2680
       ]
     },
     {
@@ -928,8 +929,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1240,
-        2820
+        1220,
+        2840
       ],
       "id": "82e01aff-0a8d-4a99-a390-6b870d8ab7dd",
       "name": "Search Agent"
@@ -953,8 +954,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        1460,
-        3080
+        1440,
+        3100
       ],
       "id": "e3fd1bdc-0be5-4dc6-8947-cfe80e5662d6",
       "name": "Supabase Vector Store",
@@ -981,8 +982,8 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        1300,
-        3060
+        1280,
+        3080
       ],
       "id": "fe467c98-fc9a-488c-b825-230f50a61686",
       "name": "get_video_by_videoId",
@@ -1001,8 +1002,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        560,
-        2460
+        540,
+        2480
       ],
       "id": "f36c520b-ac96-4642-bbfb-de63ec5d7c3e",
       "name": "Window Buffer Memory"
@@ -1015,8 +1016,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1640,
-        260
+        1520,
+        -540
       ],
       "id": "a50417e8-bb36-4d05-867d-487d4e9a09a2",
       "name": "Fetch transcript"
@@ -1029,8 +1030,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1300,
-        440
+        1140,
+        -520
       ],
       "id": "0b940a4a-62e7-4d29-ac15-4f57018a2df8",
       "name": "Get video page"
@@ -1044,8 +1045,8 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        1800,
-        260
+        1680,
+        -540
       ],
       "id": "25360a20-9177-4980-ad0a-edede58592d6",
       "name": "XML"
@@ -1067,8 +1068,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1120,
-        520
+        1100,
+        540
       ],
       "id": "f45d845b-6b5e-4054-9cee-8a8ced9c527a",
       "name": "Get Video ID"
@@ -1102,8 +1103,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1860,
-        520
+        1840,
+        540
       ],
       "id": "3bee8282-4bf3-46e5-bf2b-185a142ae125",
       "name": "Extract video details"
@@ -1117,8 +1118,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        2080,
-        520
+        2060,
+        540
       ],
       "id": "63e8889f-6455-4715-85f4-e1d19b1bb24b",
       "name": "Merge1"
@@ -1135,8 +1136,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1040,
-        220
+        1020,
+        240
       ]
     },
     {
@@ -1156,8 +1157,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3300,
-        940
+        3280,
+        960
       ],
       "id": "6f69585a-09f5-49ac-aaff-1d229c58eaba",
       "name": "Generate output message"
@@ -1169,8 +1170,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2060,
-        280
+        1940,
+        -520
       ],
       "id": "7b34b39b-424b-4639-8987-47e87a9de9b8",
       "name": "Join transcript in code"
@@ -1192,8 +1193,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2320,
-        2080
+        2300,
+        2100
       ],
       "id": "678a40c7-5b97-4ad2-9b5f-45b5020e7245",
       "name": "Gather output data"
@@ -1215,8 +1216,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1780,
-        2800
+        1760,
+        2820
       ],
       "id": "f36abd78-002a-4363-8c02-6f24a5aacc9c",
       "name": "Prepare output"
@@ -1228,8 +1229,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1480,
-        460
+        1340,
+        -540
       ],
       "id": "88973c28-4713-44c1-bbc0-7cfaaa793181",
       "name": "Extract transcript url"
@@ -1244,8 +1245,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1680,
-        500
+        1660,
+        560
       ],
       "id": "d7bcc909-a06c-4603-b4a7-97f5874537b0",
       "name": "Fetch Video Details",
@@ -1255,59 +1256,60 @@
           "name": "YT Qury Auth"
         }
       }
-    }
-  ],
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "codewithpassion.app.n8n.cloud",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-            "content-length": "207",
-            "accept": "*/*",
-            "accept-encoding": "gzip, br",
-            "accept-language": "en-AU,en-US;q=0.9,en-GB;q=0.8,en;q=0.7,de;q=0.6",
-            "authorization": "Bearer AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB",
-            "cdn-loop": "cloudflare; loops=1; subreqs=1",
-            "cf-connecting-ip": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2",
-            "cf-ew-via": "15",
-            "cf-ipcountry": "US",
-            "cf-ray": "90949feab01552a0-TLH",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "cf-worker": "n8n.cloud",
-            "content-type": "application/json",
-            "origin": "https://studio.ottomator.ai",
-            "priority": "u=1, i",
-            "referer": "https://studio.ottomator.ai/",
-            "sec-ch-ua": "\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\", \"Google Chrome\";v=\"132\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2, 172.69.180.168",
-            "x-forwarded-host": "codewithpassion.app.n8n.cloud",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "traefik-prod-users-gwc-8-86454fd949-ms967",
-            "x-is-trusted": "yes",
-            "x-real-ip": "2601:4c4:c200:52d0:f124:5717:ff9f:88f2"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "query": "https://www.youtube.com/watch?v=ZsRKDxS-tzM",
-            "session_id": "f2891dbc-cad8-473a-939c-813952ca163b",
-            "user_id": "google-oauth2|105174866370777381496",
-            "request_id": "ff37bc64-3f4a-44e1-880c-f1a0b9cbd557"
-          },
-          "webhookUrl": "https://codewithpassion.app.n8n.cloud/webhook/9a6c4630-b422-4d42-b894-81ecfe881ffe",
-          "executionMode": "production"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.supadata.ai/v1/youtube/transcript?text=true&videoId={{ $json.video_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        440
+      ],
+      "id": "440601a4-5b89-4407-8f81-2df6186b3b62",
+      "name": "Get transcript from SUPADATA",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "eQ8iTXx2iGYYwsc4",
+          "name": "Supadata Header auth"
         }
       }
-    ]
-  },
+    },
+    {
+      "parameters": {
+        "jsCode": "return { transcript: $input.first().json.content}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        440
+      ],
+      "id": "c7a809a4-5daf-4086-bc9a-e2736f38587d",
+      "name": "Join transcript in code1"
+    },
+    {
+      "parameters": {
+        "content": "# Alternative video transcript getter\n\nThis part can slot into 'Get transcript from SUPADATA' to 'Join transcript in code' by using the YT watch ui itself.\nBut if you do this too much, you might get forced to log in to proof you're not a bot. \n",
+        "height": 483,
+        "width": 1170,
+        "color": 7
+      },
+      "id": "97f5f073-9863-4af0-8fe6-04041300c3b4",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -700
+      ]
+    }
+  ],
+  "pinData": {},
   "connections": {
     "Webhook": {
       "main": [
@@ -1789,7 +1791,12 @@
       "main": [
         [
           {
-            "node": "Get video page",
+            "node": "Fetch Video Details",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get transcript from SUPADATA",
             "type": "main",
             "index": 0
           }
@@ -1836,13 +1843,7 @@
     },
     "Join transcript in code": {
       "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Gather output data": {
@@ -1874,11 +1875,6 @@
             "node": "Fetch transcript",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Fetch Video Details",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -1893,13 +1889,35 @@
           }
         ]
       ]
+    },
+    "Get transcript from SUPADATA": {
+      "main": [
+        [
+          {
+            "node": "Join transcript in code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Join transcript in code1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "18a8e374-aa96-426e-bdec-315085a1f355",
+  "versionId": "898ed2a9-3b73-48c8-9b13-9f4021c16f36",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "6cde8124a36252c1c60e3ea51461905ba5374a11dbae8af8796dac25613a3226"
