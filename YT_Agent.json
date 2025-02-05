@@ -1161,7 +1161,8 @@
         960
       ],
       "id": "6f69585a-09f5-49ac-aaff-1d229c58eaba",
-      "name": "Generate output message"
+      "name": "Generate output message",
+      "executeOnce": true
     },
     {
       "parameters": {
@@ -1917,7 +1918,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "898ed2a9-3b73-48c8-9b13-9f4021c16f36",
+  "versionId": "440ac312-655c-46cb-b264-409854a17db4",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "6cde8124a36252c1c60e3ea51461905ba5374a11dbae8af8796dac25613a3226"
